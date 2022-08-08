@@ -1,0 +1,30 @@
+{# This simple template derives from ``base.html``. See ``base.html`` for
+   more information about template inheritance. #}
+{%- extends "base.html" %}
+
+{# Loads some of the macros included with Flask-Bootstrap. We are using the
+   utils module here to automatically render Flask's flashed messages in a
+   bootstrap friendly manner #}
+{% import "bootstrap/utils.html" as utils %}
+{% block title %}This is an example page{% endblock %}
+{% block body %}
+{% block navbar %}
+
+<div class="navbar navbar-fixed-top">
+  <!-- ... -->
+</div>
+{% endblock %}
+
+{% block content %}
+        <p>Question: {{ question }}</p>
+        <p>Answers: {{ answers }}</p>
+        <table>
+        <p>{% for answer in answers %}
+
+            <tr>
+              <td>{{answer}}</td>
+            </tr>
+          {% endfor %}</p>
+        </table>
+{% endblock %}
+{% endblock %}

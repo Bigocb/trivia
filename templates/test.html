@@ -1,0 +1,142 @@
+{# This simple template derives from ``base.html``. See ``base.html`` for
+   more information about template inheritance. #}
+{%- extends "base.html" %}
+
+{# Loads some of the macros included with Flask-Bootstrap. We are using the
+   utils module here to automatically render Flask's flashed messages in a
+   bootstrap friendly manner #}
+{% import "bootstrap/utils.html" as utils %}
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet"
+          href="{{ url_for('.static', filename='mystyle.css') }}">
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('.static', filename='myscripts.js') }}"></script>
+    {{ super() }}
+{% endblock %}
+
+{# Inside the ``content`` is where you should place most of your own stuff.
+   This will keep scripts at the page end and a navbar you add on later
+   intact. #}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="navbar navbar-fixed-top">
+                    <div class="row">
+                        <div class="col-10">
+                            <table>
+                                <td>
+                                    <h5><span class="badge badge-danger"> Wrong Answers: {{ state['scores'][0] }}</span>
+                                    </h5>
+                                </td>
+                                <td>
+                                    <h5><span
+                                            class="badge badge-success"> Correct Answers: {{ state['scores'][1] }}</span>
+                                    </h5>
+                                </td>
+                                <td>
+                                    <h5><span
+                                            class="badge badge-secondary"> High Score : {{ state['scores'][2] }}</span>
+                                    </h5>
+                                </td>
+                                <td>
+                                    <h5><span class="badge badge-secondary"> Percent: {{ state['scores'][3] }}</span>
+                                    </h5>
+                                </td>
+                                <td>
+                                    <h5><span class="badge badge-secondary"> Skips: {{ state['skips'] }}</span>
+                                    </h5>
+                                </td>
+                                <td>
+                                    <h5><span class="badge badge-secondary"> Coins: {{ state['coins'] }}</span>
+                                    </h5>
+                                </td>
+                                <td>
+                                    <form name="Item_2" method="POST">
+                                        <button class="btn btn-outline-secondary btn-sm btn-block" type="submit"
+                                                name="add_skip"
+                                                value="1">+
+                                        </button>
+                                    </form>
+                                </td>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-header">
+                        <table>
+                            <tr>
+                                <td>
+                                    <h5><span class="badge badge-secondary"> {{ state['diff'] }}</span></h5>
+                                </td>
+                                <td>
+                                    <h5><span class="badge badge-secondary"> {{ state['current_cat'] }}</span></h5>
+                                </td>
+                                <td>
+                                    <h5><span class="badge badge-secondary"> {{ state['run'] }}</span></h5>
+                                </td>
+                                <td>
+                                    {% if ( state['error'] != '') %}
+                                        <h5><span class="badge badge-danger"> {{ state['error'] }}</span></h5>
+                                    {% endif %}
+                                </td>
+
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ question }}</h3>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <form role="form" method="post">
+                            <table>
+                                {% for answer in answers %}
+                                    <tr>
+                                        <button class="btn btn-outline-secondary btn-lg btn-block" type="submit"
+                                                name="check"
+                                                value="{{ answer[1] }},{{ quest_string }}, {{ correct_answer }},{{ quest_cat }}">{{ answer[0] }}</button>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                            {#  <button type="submit" name="submit" value="submit">Submit</button>#}
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-4">
+                <form name="Item_1" method="POST">
+                    <table>
+                        {% for colour in state['categories'] %}
+                            <tr>
+                                <td style="padding:10px">
+                                    {% if ( state['skips'] == 0 ) %}
+                                        <button class="btn btn-outline-secondary btn-sm btn-block" type="submit"
+                                                name="colours"
+                                                value="{{ colour[1] }}" disabled>{{ colour[1] }}</button>
+                                    {% else %}
+                                        <button class="btn btn-secondary btn-sm btn-block" type="submit" name="colours"
+                                                value="{{ colour[1] }}">{{ colour[1] }}</button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{%- endblock %}
+
+{#            <div class="col-6 col-md-4">#}
+
+{#            </div>#}
